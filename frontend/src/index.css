@@ -1,0 +1,38 @@
+[aria-hidden="true"][class="mjx-math"] {
+    display: none;
+}
+
+.highlight {
+    font-size: 90%;
+    color: #f8f8f2;
+    background-color: #233445;
+}
+
+.highlight .c1 {
+    color: #3776CE;
+    font-style: italic;
+}
+
+.highlight .o {
+    color: #f92672;
+    font-weight: bold;
+}
+
+.highlight .mi {
+    color: #ae81ff;
+}
+
+.highlight .k, .highlight .kv {
+    color: #66d9ef;
+    font-weight: bold;
+}
+
+.highlight .s {
+    color: #e6db74;
+}
+
+
+
+
+
+
