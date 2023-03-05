@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-function CustomSelect({ options, selected, setSelected }) {
+function CustomSelect({ name, options, selected, setSelected }) {
     const isAllSelected = options.length > 0 && selected.length === options.length;
 
     const handleChange = (event) => {
@@ -26,7 +26,7 @@ function CustomSelect({ options, selected, setSelected }) {
                 value={selected}
                 onChange={handleChange}
                 displayEmpty={true}
-                renderValue={(selected) => !selected.length ? "Select": 
+                renderValue={(selected) => !selected.length ? "Select " + name :
                     selected.length === 1 ? selected[0] :
                         isAllSelected ? "Select All" : "Multiple Select"
                 }

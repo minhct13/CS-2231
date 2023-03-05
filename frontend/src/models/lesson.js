@@ -1,9 +1,11 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const Lesson = createSlice({
   name: "lesson",
   initialState: {
     data: [],
+    topic: [],
+    current: 0,
   },
   reducers: {
     getState(state) {

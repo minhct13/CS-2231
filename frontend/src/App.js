@@ -1,8 +1,6 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,16 +10,14 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import MenuButton from './MenuButton';
 import SearchBar from './SearchBar';
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const openedMixin = (theme) => ({
     width: drawerWidth,
@@ -91,7 +87,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 function App(props) {
     const { lesson, dispatch } = props
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     useEffect(() => {
         console.log(lesson);
@@ -128,7 +124,7 @@ function App(props) {
                     <SearchBar />
                 </Toolbar>
             </AppBar>
-            <Drawer variant="permanent" open={open}>
+            <Drawer variant="permanent" open={open} hidden={!open}>
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -136,51 +132,19 @@ function App(props) {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+                    {lesson.data.map((l, index) => (
+                        <ListItem key={index} disablePadding sx={{ display: 'block' }}
+                            onClick={() => {
+                                dispatch({ type: "lesson/saveState", payload: { current: index } })
+                            }}>
                             <ListItemButton
                                 sx={{
-                                    minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
                                     px: 2.5,
                                 }}
                             >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    {open ? index % 2 === 0 ? <InboxIcon /> : <MailIcon /> :
-                                        <MenuButton name={text} icon={index % 2 === 0 ? <InboxIcon /> : <MailIcon />} />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary={<div dangerouslySetInnerHTML={{ __html: l.title }}
+                                    style={{ fontSize: 8, whiteSpace: "break-spaces" }} />} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -188,15 +152,16 @@ function App(props) {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <DrawerHeader />
-                <div dangerouslySetInnerHTML={{ __html: lesson.data[0] && lesson.data[0].title }} />
-                <div dangerouslySetInnerHTML={{ __html: lesson.data[0] && lesson.data[0].introduction.title }} />
-                <div dangerouslySetInnerHTML={{ __html: lesson.data[0] && lesson.data[0].introduction.content }} />
-                <div dangerouslySetInnerHTML={{ __html: lesson.data[0] && lesson.data[0].formulas.title }} />
-                <div dangerouslySetInnerHTML={{ __html: lesson.data[0] && lesson.data[0].formulas.content }} />
-                <div dangerouslySetInnerHTML={{ __html: lesson.data[0] && lesson.data[0].examples.title }} />
-                <div dangerouslySetInnerHTML={{ __html: lesson.data[0] && lesson.data[0].examples.content }} />
+                <div dangerouslySetInnerHTML={{ __html: lesson.data[lesson.current] && lesson.data[lesson.current].topic }} />
+                <div dangerouslySetInnerHTML={{ __html: lesson.data[lesson.current] && lesson.data[lesson.current].title }} />
+                <div dangerouslySetInnerHTML={{ __html: lesson.data[lesson.current] && lesson.data[lesson.current].introduction.title }} />
+                <div dangerouslySetInnerHTML={{ __html: lesson.data[lesson.current] && lesson.data[lesson.current].introduction.content }} />
+                <div dangerouslySetInnerHTML={{ __html: lesson.data[lesson.current] && lesson.data[lesson.current].formulas.title }} />
+                <div dangerouslySetInnerHTML={{ __html: lesson.data[lesson.current] && lesson.data[lesson.current].formulas.content }} />
+                <div dangerouslySetInnerHTML={{ __html: lesson.data[lesson.current] && lesson.data[lesson.current].examples.title }} />
+                <div dangerouslySetInnerHTML={{ __html: lesson.data[lesson.current] && lesson.data[lesson.current].examples.content }} />
             </Box>
-        </Box>
+        </Box >
     );
 }
 
