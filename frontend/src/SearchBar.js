@@ -13,12 +13,14 @@ function SearchBar(props) {
   const [topic, setTopic] = useState([])
   const [scope, setScope] = useState([])
   const [search, setSearch] = useState([])
+  const [text, setText] = useState("")
   const ref = useRef(null)
   useEffect(() => { console.log(topic); }, [topic])
   useEffect(() => { console.log(scope); }, [scope])
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event) => {
     setAnchorEl(ref.current);
+    handleChange({ target: { value: text } })
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -33,6 +35,7 @@ function SearchBar(props) {
   }
 
   const handleChange = (e) => {
+    setText(e.target.value)
     let temp = lesson.data
     if (topic.length)
       temp = temp.filter(x => topic.some(t => x.topic.indexOf(t) > -1))
