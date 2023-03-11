@@ -28,15 +28,16 @@ def extract_html(html_f):
     topic = str(soup.find('ul', {'class': 'tags'}))
     title = str(soup.find('h1', {'class': 'post-title'}))
     introduction = sections[0]
+    sections[1]["content"] +=  sections[2]["content"]
     formulas = sections[1]
-    examples = sections[2]
+    examples = sections[3]
 
     # create a dictionary containing the partitions
     data = {'topic': topic, 'title': title, 'introduction': introduction, "formulas":formulas, "examples":examples}
 
     # save the data as JSON
     html_f = os.path.basename(html_f)
-    with open(f'./json/{html_f}.json', 'w', encoding='utf-8') as f:
+    with open(f'./json1/{html_f}.json', 'w', encoding='utf-8') as f:
 
         json.dump(data, f, ensure_ascii=False)
 
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     import glob
 
     # path to directory containing HTML files
-    directory = "./html"
+    directory = "./html1"
 
     # loop through all HTML files in directory
     for file_path in glob.glob(directory + "/*.html"):
