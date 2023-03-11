@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./migrations:/backend/migrations
+    restart: always
+    networks:
+      - cs-2231_default
+networks:
+  cs-2231_default:
+    external: true
